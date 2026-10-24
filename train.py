@@ -95,6 +95,11 @@ def main():
     test_p = paths[n_train + n_val :]
     print(f"Split -> train {len(train_p)}, val {len(val_p)}, test {len(test_p)}")
 
+    # NEW: Save the exact test split for reproducibility
+    os.makedirs("docs", exist_ok=True)
+    with open("docs/test_split.txt", "w") as f:
+        f.write("\n".join(os.path.basename(p) for p in test_p))
+
     keys = ["image", "label"]
     train_tf = Compose([
         RandFlipd(keys=keys, prob=0.5, spatial_axis=0),
@@ -123,6 +128,7 @@ def main():
 
     with mlflow.start_run():
         mlflow.log_params(vars(args))
+        mlflow.log_param("n_images", n)
         mlflow.log_param("architecture", "monai.AttentionUnet")
         mlflow.log_param("device", device)
 
@@ -158,6 +164,7 @@ def main():
         mlflow.log_metric("test_dice", test_dice)
         mlflow.log_metric("test_iou", test_iou)
         mlflow.log_artifact(best_path)
+        mlflow.log_artifact("docs/test_split.txt")
         print(f"TEST  dice={test_dice:.4f}  iou={test_iou:.4f}")
 
 
