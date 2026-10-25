@@ -1,8 +1,0 @@
-torch
-monai
-mlflow
-pillow
-numpy
-fastapi
-uvicorn[standard]
-python-multipart

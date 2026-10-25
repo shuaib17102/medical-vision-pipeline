@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+data/
+data256/
+mlruns/
+mlflow.db
+*.zip
+mask.png
+ISIC_*.jpg
+.DS_Store
